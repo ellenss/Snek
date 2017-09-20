@@ -3,12 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -26,6 +21,7 @@ public class Game2 extends JFrame implements KeyListener, ActionListener{
 		String beveg = "hoyre";
 		int poeng = 0;
 		JLabel score = new JLabel("Score: " + poeng);
+		boolean pause = false;
 		
 
 		
@@ -47,21 +43,12 @@ public class Game2 extends JFrame implements KeyListener, ActionListener{
 	
 	public void drawAlt(){
 		Graphics g = this.getGraphics();
+		//g.clearRect(39, 49, 601, 601);
+		g.clearRect(s.xPunkter[s.antallDeler - 1], s.yPunkter[s.antallDeler - 1], 10, 10);
+		g.clearRect(s.xPunkter[s.antallDeler], s.yPunkter[s.antallDeler], 10, 10);
 		this.ep.DrawStuff(g);
 		this.s.DrawStuff(g);
 		g.drawRect(39, 49, 601, 601);
-		if(beveg.equals("opp")){
-			g.clearRect(s.xPunkter[s.antallDeler - 1], s.yPunkter[s.antallDeler - 1], 10, 10);
-		}
-		if(beveg.equals("ned")){
-			g.clearRect(s.xPunkter[s.antallDeler - 1], s.yPunkter[s.antallDeler - 1], 10, 10);
-		}
-		if(beveg.equals("hoyre")){
-			g.clearRect(s.xPunkter[s.antallDeler - 1], s.yPunkter[s.antallDeler - 1], 10, 10);
-		}
-		if(beveg.equals("venstre")){
-			g.clearRect(s.xPunkter[s.antallDeler - 1], s.yPunkter[s.antallDeler - 1], 10, 10);
-		}
 	}
 	
 	public void gameOver() {
@@ -72,40 +59,50 @@ public class Game2 extends JFrame implements KeyListener, ActionListener{
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		//Oppover
-		if(arg0.getKeyCode()==KeyEvent.VK_UP){
-			if(beveg == "ned"){
-				//Do nothing
+		if (arg0.getKeyCode() == KeyEvent.VK_P) {
+			if (pause == false) {
+				pause = true;
 			}
-			else{
-				beveg = "opp";
-			}			
-		}
-		//Nedover
-		if(arg0.getKeyCode()==KeyEvent.VK_DOWN){
-			if(beveg == "opp"){
-				//Do nothing
-			}
-			else{
-				beveg = "ned";
+			else {
+				pause = false;
 			}
 		}
-		//Venstre
-		if(arg0.getKeyCode()==KeyEvent.VK_LEFT){
-			if(beveg == "hoyre"){
-				//Do nothing
+		if (pause == false) {
+			//Oppover
+			if(arg0.getKeyCode()==KeyEvent.VK_UP){
+				if(beveg == "ned"){
+					//Do nothing
+				}
+				else{
+					beveg = "opp";
+				}			
 			}
-			else{
-				beveg = "venstre";
+			//Nedover
+			if(arg0.getKeyCode()==KeyEvent.VK_DOWN){
+				if(beveg == "opp"){
+					//Do nothing
+				}
+				else{
+					beveg = "ned";
+				}
 			}
-		}
-		//Høyre
-		if(arg0.getKeyCode()==KeyEvent.VK_RIGHT){
-			if(beveg == "venstre"){
-				//Do nothing
+			//Venstre
+			if(arg0.getKeyCode()==KeyEvent.VK_LEFT){
+				if(beveg == "hoyre"){
+					//Do nothing
+				}
+				else{
+					beveg = "venstre";
+				}
 			}
-			else{
-				beveg = "hoyre";
+			//Høyre
+			if(arg0.getKeyCode()==KeyEvent.VK_RIGHT){
+				if(beveg == "venstre"){
+					//Do nothing
+				}
+				else{
+					beveg = "hoyre";
+				}
 			}
 		}
 	}
@@ -146,22 +143,24 @@ public class Game2 extends JFrame implements KeyListener, ActionListener{
 		}
 		
 		// Bevegelse:
-		for (int i = s.antallDeler - 1; i > 0; i--) {
-			s.yPunkter[i] = s.yPunkter[i-1];
-			s.xPunkter[i] = s.xPunkter[i-1];
+		if (pause == false) {
+			for (int i = s.antallDeler; i > 0; i--) {
+				s.yPunkter[i] = s.yPunkter[i-1];
+				s.xPunkter[i] = s.xPunkter[i-1];
+			}
+			if (beveg.equals("opp")){
+				s.yPunkter[0] -= 10;
+			}
+			if (beveg.equals("ned")){
+				s.yPunkter[0] += 10;
+			}
+			if (beveg.equals("venstre")){
+				s.xPunkter[0] -= 10;
+			}
+			if (beveg.equals("hoyre")){
+				s.xPunkter[0] += 10;
+			}
+			this.drawAlt();
 		}
-		if (beveg.equals("opp")){
-			s.yPunkter[0] -= 10;
-		}
-		if (beveg.equals("ned")){
-			s.yPunkter[0] += 10;
-		}
-		if (beveg.equals("venstre")){
-			s.xPunkter[0] -= 10;
-		}
-		if (beveg.equals("hoyre")){
-			s.xPunkter[0] += 10;
-		}
-		this.drawAlt();
 	}
 }

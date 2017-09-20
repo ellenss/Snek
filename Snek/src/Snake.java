@@ -19,7 +19,7 @@ public class Snake extends Objekt{
 		hale = new ImageIcon(getClass().getResource("Hale.png"));
 		
 		for (int i = 0; i < antallDeler; i++) {
-			xPunkter[i] = 40 - i*10;
+			xPunkter[i] = 80 - i*10;
 			yPunkter[i] = 50;
 		}
 	}
@@ -29,6 +29,6 @@ public class Snake extends Objekt{
 			this.bilde.paintIcon(null, g, xPunkter[i], yPunkter[i]);
 		}
 		hode.paintIcon(null, g, xPunkter[0], yPunkter[0]);
-		hale.paintIcon(null, g, xPunkter[4], yPunkter[4]);
+		hale.paintIcon(null, g, xPunkter[antallDeler - 1], yPunkter[antallDeler - 1]);
 	}
 }
